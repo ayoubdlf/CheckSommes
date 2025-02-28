@@ -19,6 +19,7 @@ public class Main extends Application {
         VBox rightPanel = new VBox();
         rightPanel.getChildren().addAll(new Infos(jeu), new Historique(jeu));
 
+        root.setTop(new MenuJeu(jeu));
         root.setCenter(new PlateauGraphique(jeu));
         root.setBottom(new PanneauDeControle(jeu));
         root.setRight(rightPanel);

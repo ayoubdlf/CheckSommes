@@ -1,12 +1,10 @@
 package checkSommes.modele;
 
+import checkSommes.exceptions.ErreurFichier;
 import checkSommes.fabrique.FabriquePlateau;
 import checkSommes.ig.Observateur;
-import checkSommes.utils.Couleur;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 
 public class Jeu implements Iterable<Coup>{
@@ -23,13 +21,6 @@ public class Jeu implements Iterable<Coup>{
      */
     public Jeu() {
         this.observateurs = new ArrayList<>(3);
-        this.initJeu();
-    }
-
-    /**
-     * Initialise le jeu.
-     */
-    private void initJeu() {
         this.coups        = new ArrayList<>();
         this.mode         = false;
         this.nbVies       = 5;
@@ -40,7 +31,17 @@ public class Jeu implements Iterable<Coup>{
      * Réinitialise le plateau de jeu.
      */
     public void reinitialiserPlateau() {
-        this.initJeu();
+        this.coups.clear();
+        this.mode   = false;
+        this.nbVies = 5;
+
+        for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
+            for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
+                this.cases[ligne][colonne].initialiser();
+            }
+        }
+
+        this.notifierObservateurs();
     }
 
     /**
@@ -203,12 +204,17 @@ public class Jeu implements Iterable<Coup>{
         return this.cases[ligne][colonne].estSolution();
     }
 
+    /**
+     * Enlève un nombre de vies du jeu.
+     *
+     * @param nbVies Le nombre de vies à enlever.
+     */
     private void enleverVie(int nbVies) {
         assert (nbVies > 0 && nbVies < this.getNbVies()) : "La nombre de la vie est incorrect";
 
-        this.nbVies -= nbVies;
+        this.nbVies = Math.max(0, this.nbVies - nbVies); // on evite d'avoir des vies negatives
 
-        this.notifierObservateurs();
+        // this.notifierObservateurs(); // Si on enleve ce commentaire ca vas causer des erreurs et afficher le dernier coup dans le nouveau game
     }
 
     /**
@@ -218,6 +224,9 @@ public class Jeu implements Iterable<Coup>{
      * @param colonne La colonne de la case à choisir.
      */
     public void choisirCase(int ligne, int colonne) {
+        assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
+        assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
+        
         this.choisirCase(ligne, colonne, false);
     }
 
@@ -226,33 +235,28 @@ public class Jeu implements Iterable<Coup>{
      *
      * @param ligne   La ligne de la case à choisir.
      * @param colonne La colonne de la case à choisir.
-     * @param aide    Indique si une aide est utilisée.
+     * @param avecAide Indique si une aide est utilisée.
      */
-    public void choisirCase(int ligne, int colonne, boolean aide) {
+    public void choisirCase(int ligne, int colonne, boolean avecAide) {
         assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
         assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
 
-        Case c = this.cases[ligne][colonne];
-        if(c.estChoisie() || this.jeuTermine()) { return; } // Si la case est deja choisie, ou le jeu est terminé, alors ne rien faire
+        Case caseChoisie = this.cases[ligne][colonne];
+        if(caseChoisie.estChoisie()) { return; } // Ne rien faire si la case est déjà choisie
 
-        c.choisir();
+        caseChoisie.choisir();
 
-        int couleur = c.estSolution() ? Couleur.CORAIL.getNumero() : Couleur.GRIS.getNumero();
-        c.setCouleur(couleur);
-
-        if(aide) {
+        if(avecAide) {
             this.enleverVie(2);
-        }
-
-        if (!aide && ((this.enModeOui() && !c.estSolution()) || (this.enModeNon() && c.estSolution()))) {
+        } else if ((this.enModeOui() && !caseChoisie.estSolution()) || (this.enModeNon() && caseChoisie.estSolution())) {
             this.enleverVie(1);
         }
 
-        Coup coup = new Coup(ligne, colonne, this.sommeLigne(ligne), this.sommeColonne(colonne), aide);
-        coup.setEstSolution(c.estSolution());
+        Coup coup = new Coup(ligne, colonne, this.sommeLigne(ligne), this.sommeColonne(colonne));
+        coup.setEstAvecAide(avecAide);
+        coup.setEstSolution(caseChoisie.estSolution());
 
-
-        this.coups.add(coup);
+        this.coups.add(coup); // Ajouter le coup
 
         this.notifierObservateurs();
     }
@@ -263,7 +267,7 @@ public class Jeu implements Iterable<Coup>{
      * @return true si le jeu est terminé, false sinon.
      */
     public boolean jeuTermine() {
-        return (this.nbVies <= 0) || (this.getNbSolutions() == this.getNbSolutionsTrouves());
+        return (this.nbVies == 0) || (this.getNbSolutions() == this.getNbSolutionsTrouves());
     }
 
     /**
@@ -273,6 +277,58 @@ public class Jeu implements Iterable<Coup>{
         Integer[] caseAleatoireNonChoisie = this.getCaseAleatoireNonChoisie();
 
         this.choisirCase(caseAleatoireNonChoisie[0], caseAleatoireNonChoisie[1], true);
+    }
+
+    /**
+     * Ouvre un fichier et initialise le plateau de jeu.
+     *
+     * @param fichier Le fichier à ouvrir.
+     * @throws ErreurFichier Si le fichier est incorrect.
+     */
+    public void ouvrir(File fichier) throws ErreurFichier {
+        assert (fichier != null) : "Le fichier est incorrect";
+
+        try {
+            BufferedReader bufferReader = new BufferedReader(new FileReader(fichier));
+
+            String line;
+            int ligne = 0;
+            this.cases = null;
+
+            while ((line = bufferReader.readLine()) != null) {
+                if (ligne == 0) {
+                    String[] size  = line.trim().split("\\s+");
+
+                    int nbLignes   = Integer.parseInt(size[0]);
+                    int nbColonnes = Integer.parseInt(size[1]);
+
+                    this.cases = new Case[nbLignes][nbColonnes];
+                } else {
+                    String[] casesStr = line.trim().split("\\s+");
+
+                    for (int colonne = 0; colonne < casesStr.length; colonne++) {
+                        Case c;
+
+                        if (casesStr[colonne].charAt(0) == '*') {
+                            // gerer les solutions
+                            c = new Case(Integer.parseInt(casesStr[colonne].substring(1)));
+                            c.setEstSolution();
+                        } else {
+                            c = new Case(Integer.parseInt(casesStr[colonne]));
+                        }
+
+                        this.cases[ligne-1][colonne] = c;
+                    }
+                }
+
+                ligne++;
+
+            }
+
+            this.reinitialiserPlateau();
+        } catch (IOException e) {
+            throw new ErreurFichier(e.toString());
+        }
     }
 
     /**
@@ -298,7 +354,6 @@ public class Jeu implements Iterable<Coup>{
         for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
             for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
                 if(!this.cases[ligne][colonne].estChoisie()) {
-                    // casesNonChoisies.add(this.cases[ligne][colonne]);
                     casesNonChoisies.add(new Integer[]{ ligne, colonne });
                 }
             }

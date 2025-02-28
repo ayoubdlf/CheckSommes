@@ -4,6 +4,7 @@ import checkSommes.modele.Coup;
 import checkSommes.modele.Jeu;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 
 public class Historique extends VBox implements Observateur {
@@ -14,6 +15,8 @@ public class Historique extends VBox implements Observateur {
     public Historique(Jeu jeu) {
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
+
+        this.afficherCoups();
     }
 
     /**
@@ -34,6 +37,9 @@ public class Historique extends VBox implements Observateur {
 
         for(Coup coup : this.jeu) {
             Label label = new Label(coup.toString());
+            if(coup.estAvecAide()) {
+                label.setTextFill(Color.RED);
+            }
             this.getChildren().add(label);
         }
     }

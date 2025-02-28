@@ -10,7 +10,6 @@ public class PanneauDeControle extends HBox implements Observateur {
 
     private Jeu    jeu;
     private Button buttonMode;
-    private Button buttonAide;
 
     /**
      * Constructeur de PanneauDeControle.
@@ -23,12 +22,16 @@ public class PanneauDeControle extends HBox implements Observateur {
         this.jeu.ajouterObservateur(this);
 
         this.buttonMode = new Button(this.jeu.enModeOui() ? "Oui" : "Non");
-        this.buttonAide = new Button("Aide");
-
         this.buttonMode.setOnAction(e -> this.jeu.switchMode());
-        this.buttonAide.setOnAction(e -> this.jeu.aider());
 
-        this.getChildren().addAll(this.buttonMode, this.buttonAide);
+        Button buttonAide = new Button("Aide");
+        buttonAide.setOnAction(e -> {
+            if(!this.jeu.jeuTermine()) {
+                this.jeu.aider();
+            }
+        });
+
+        this.getChildren().addAll(this.buttonMode, buttonAide);
         this.setAlignment(Pos.CENTER);
     }
 

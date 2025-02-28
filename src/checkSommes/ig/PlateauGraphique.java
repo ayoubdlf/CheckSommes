@@ -1,10 +1,12 @@
 package checkSommes.ig;
 
+import checkSommes.modele.Coup;
 import checkSommes.modele.Jeu;
 import checkSommes.utils.Couleur;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 
 
 public class PlateauGraphique extends GridPane implements Observateur {
@@ -32,8 +34,8 @@ public class PlateauGraphique extends GridPane implements Observateur {
     public void reagir() {
         if(this.jeu.jeuTermine()) {
             this.showDialogue();
-            this.jeu.reinitialiserPlateau();
         }
+
         this.initPlateau();
     }
 
@@ -41,13 +43,14 @@ public class PlateauGraphique extends GridPane implements Observateur {
      * Affiche un dialogue indiquant que le jeu est terminé.
      */
     private void showDialogue() {
-        Dialog<String> dialog = new Dialog<>();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Jeu termine");
+        alert.setHeaderText(null);
+        alert.setContentText("Vous avez terminé le jeu");
 
-        dialog.setTitle("Jeu termine");
-        dialog.setContentText("Vous avez terminé le jeu");
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-        dialog.showAndWait();
+        alert.showAndWait()
+            .filter(response -> response == ButtonType.OK)
+            .ifPresent(response -> this.jeu.reinitialiserPlateau());
     }
 
     /**
@@ -96,7 +99,11 @@ public class PlateauGraphique extends GridPane implements Observateur {
                 final int nbColonne = colonne;  // on a besoin de `final` pour faire appel à la fonction lambda du button onAction
 
                 Button button = new Button(valeurCase);
-                button.setOnAction(e -> this.jeu.choisirCase(nbLigne, nbColonne));
+                button.setOnAction(e -> {
+                    if(!this.jeu.jeuTermine()) {
+                        this.jeu.choisirCase(nbLigne, nbColonne);
+                    }
+                });
 
                 button.setBackground(new Background(new BackgroundFill(Couleur.getCouleur(couleurCase), new CornerRadii(4), new Insets(2))));
                 button.setMaxWidth(Double.MAX_VALUE);

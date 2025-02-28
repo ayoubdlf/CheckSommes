@@ -7,9 +7,7 @@ import javafx.scene.layout.HBox;
 
 public class Infos extends HBox implements Observateur {
 
-    private Jeu         jeu;
-    private ImageView[] coeurs;
-
+    private Jeu jeu;
 
     /**
      * Constructeur de la classe Infos.
@@ -22,7 +20,9 @@ public class Infos extends HBox implements Observateur {
 
         this.initCoeurs();
 
-        // this.setAlignment(Pos.CENTER);
+        this.setMinHeight(40);
+        this.setPrefHeight(40);
+        this.setMaxHeight(40);
     }
 
     /**
@@ -40,18 +40,14 @@ public class Infos extends HBox implements Observateur {
     private void initCoeurs() {
         this.getChildren().clear();
 
-        if(this.jeu.getNbVies() <= 0) { return; }
+        if(this.jeu.getNbVies() == 0) { return; }
+        
+        for (int i = 0; i < this.jeu.getNbVies(); i++) {
+            ImageView coeur = new ImageView();
+            coeur.setImage(new Image(getClass().getResource("/coeur.png").toExternalForm()));
+            coeur.setFitWidth(30);
+            coeur.setPreserveRatio(true);
 
-        this.coeurs = new ImageView[this.jeu.getNbVies()];
-
-        for (int i = 0; i < this.coeurs.length; i++) {
-            this.coeurs[i] = new ImageView();
-            this.coeurs[i].setImage(new Image(getClass().getResource("/coeur.png").toExternalForm()));
-            this.coeurs[i].setFitWidth(30);
-            this.coeurs[i].setPreserveRatio(true);
-        }
-
-        for(ImageView coeur : this.coeurs) {
             this.getChildren().add(coeur);
         }
     }

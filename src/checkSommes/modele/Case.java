@@ -70,6 +70,7 @@ public class Case {
      */
     public void choisir() {
         this.choisie = true;
+        this.setCouleur(this.estSolution() ? Couleur.CORAIL.getNumero() : Couleur.GRIS.getNumero());
     }
 
     /**
@@ -79,6 +80,14 @@ public class Case {
         assert (couleur >= 0 && couleur <= 2) : "La couleur de la case est invalide";
 
         this.couleur = couleur;
+    }
+
+    /**
+     * Initialise la case.
+     */
+    public void initialiser() {
+        this.choisie = false;
+        this.couleur = Couleur.VERT.getNumero();
     }
 
 }

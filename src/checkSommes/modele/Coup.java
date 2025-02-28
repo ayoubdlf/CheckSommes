@@ -17,14 +17,13 @@ public class Coup {
      * @param colonne Le numero de la colonne.
      * @param sommeLigne La somme de la ligne.
      * @param sommeColonne La somme de la colonne.
-     * @param aide
      */
-    public Coup(int ligne, int colonne, int sommeLigne, int sommeColonne, boolean aide) {
+    public Coup(int ligne, int colonne, int sommeLigne, int sommeColonne) {
         this.ligne        = ligne;
         this.colonne      = colonne;
         this.sommeLigne   = sommeLigne;
         this.sommeColonne = sommeColonne;
-        this.aide         = aide;
+        this.aide         = false;
         this.estSolution  = false;
     }
 
@@ -69,7 +68,7 @@ public class Coup {
      *
      * @return La valeur de l'aide.
      */
-    public boolean getAide() {
+    public boolean estAvecAide() {
         return this.aide;
     }
 
@@ -91,9 +90,12 @@ public class Coup {
         this.estSolution = estSolution;
     }
 
+    public void setEstAvecAide(boolean aide) {
+        this.aide = aide;
+    }
 
     @Override
     public String toString() {
-        return String.format("<L%d, C%d> / <%d %d>", this.getLigne(), this.getColonne(), this.getSommeLigne(), this.getSommeColonne());
+        return String.format("<L%d, C%d> / <%d %d>", this.getLigne()+1, this.getColonne()+1, this.getSommeLigne(), this.getSommeColonne());
     }
 }
