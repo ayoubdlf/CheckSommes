@@ -12,6 +12,12 @@ public class PanneauDeControle extends HBox implements Observateur {
     private Button buttonMode;
     private Button buttonAide;
 
+    /**
+     * Constructeur de PanneauDeControle.
+     * Initialise les boutons et les actions associées.
+     *
+     * @param jeu L'instance du jeu à laquelle ce panneau est associé.
+     */
     public PanneauDeControle(Jeu jeu) {
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
@@ -26,6 +32,10 @@ public class PanneauDeControle extends HBox implements Observateur {
         this.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Méthode reagir qui met à jour le texte du bouton mode.
+     * Appelée lorsque l'état du jeu change.
+     */
     public void reagir() {
         this.buttonMode.setText(this.jeu.enModeOui() ? "Oui" : "Non");
     }

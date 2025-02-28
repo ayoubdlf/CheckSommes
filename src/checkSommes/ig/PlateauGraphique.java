@@ -11,6 +11,11 @@ public class PlateauGraphique extends GridPane implements Observateur {
 
     private Jeu jeu;
 
+    /**
+     * Constructeur de la classe PlateauGraphique.
+     * 
+     * @param jeu Le modèle de jeu associé à ce plateau graphique.
+     */
     public PlateauGraphique(Jeu jeu) {
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
@@ -20,6 +25,10 @@ public class PlateauGraphique extends GridPane implements Observateur {
         this.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Méthode appelée pour réagir aux changements dans le modèle de jeu.
+     * Si le jeu est terminé, affiche un dialogue et réinitialise le plateau.
+     */
     public void reagir() {
         if(this.jeu.jeuTermine()) {
             this.showDialogue();
@@ -28,6 +37,9 @@ public class PlateauGraphique extends GridPane implements Observateur {
         this.initPlateau();
     }
 
+    /**
+     * Affiche un dialogue indiquant que le jeu est terminé.
+     */
     private void showDialogue() {
         Dialog<String> dialog = new Dialog<>();
 
@@ -38,6 +50,9 @@ public class PlateauGraphique extends GridPane implements Observateur {
         dialog.showAndWait();
     }
 
+    /**
+     * Initialise les labels affichant les sommes des lignes et des colonnes.
+     */
     private void initLabelSommes() {
         for (int ligne = 0; ligne < this.jeu.getNbLignes(); ligne++) {
             String sommeLigne = Integer.toString(this.jeu.sommeLigne(ligne));
@@ -65,6 +80,9 @@ public class PlateauGraphique extends GridPane implements Observateur {
         }
     }
 
+    /**
+     * Initialise le plateau de jeu en ajoutant les boutons et les labels.
+     */
     private void initPlateau() {
         this.getChildren().clear();
 

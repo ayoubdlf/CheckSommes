@@ -26,11 +26,21 @@ public class Jeu implements Iterable<Coup>{
         this.initJeu();
     }
 
+    /**
+     * Initialise le jeu.
+     */
     private void initJeu() {
         this.coups        = new ArrayList<>();
         this.mode         = false;
         this.nbVies       = 5;
         this.cases        = FabriquePlateau.FabriquePlateau5x5();
+    }
+
+    /**
+     * Réinitialise le plateau de jeu.
+     */
+    public void reinitialiserPlateau() {
+        this.initJeu();
     }
 
     /**
@@ -201,10 +211,23 @@ public class Jeu implements Iterable<Coup>{
         this.notifierObservateurs();
     }
 
+    /**
+     * Choisi une case du plateau de jeu.
+     *
+     * @param ligne   La ligne de la case à choisir.
+     * @param colonne La colonne de la case à choisir.
+     */
     public void choisirCase(int ligne, int colonne) {
         this.choisirCase(ligne, colonne, false);
     }
 
+    /**
+     * Choisi une case du plateau de jeu.
+     *
+     * @param ligne   La ligne de la case à choisir.
+     * @param colonne La colonne de la case à choisir.
+     * @param aide    Indique si une aide est utilisée.
+     */
     public void choisirCase(int ligne, int colonne, boolean aide) {
         assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
         assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
@@ -234,20 +257,29 @@ public class Jeu implements Iterable<Coup>{
         this.notifierObservateurs();
     }
 
+    /**
+     * Vérifie si le jeu est terminé.
+     *
+     * @return true si le jeu est terminé, false sinon.
+     */
     public boolean jeuTermine() {
         return (this.nbVies <= 0) || (this.getNbSolutions() == this.getNbSolutionsTrouves());
     }
 
+    /**
+     * Utilise une aide pour choisir une case du plateau de jeu.
+     */
     public void aider() {
         Integer[] caseAleatoireNonChoisie = this.getCaseAleatoireNonChoisie();
 
         this.choisirCase(caseAleatoireNonChoisie[0], caseAleatoireNonChoisie[1], true);
     }
 
-    public void reinitialiserPlateau() {
-        this.initJeu();
-    }
-
+    /**
+     * Retourne une case aléatoire non choisie du plateau de jeu.
+     *
+     * @return La case aléatoire non choisie.
+     */
     private Integer[] getCaseAleatoireNonChoisie() {
         ArrayList<Integer[]> casesAleatoire = this.getCasesNonChoisies();
         Collections.shuffle(casesAleatoire);
@@ -255,6 +287,11 @@ public class Jeu implements Iterable<Coup>{
         return casesAleatoire.getFirst();
     }
 
+    /**
+     * Retourne une liste de cases non choisies du plateau de jeu.
+     *
+     * @return La liste des cases non choisies.
+     */
     private ArrayList<Integer[]> getCasesNonChoisies() {
         ArrayList<Integer[]> casesNonChoisies = new ArrayList<>();
 
@@ -270,6 +307,11 @@ public class Jeu implements Iterable<Coup>{
         return casesNonChoisies;
     }
 
+    /**
+     * Retourne le nombre de solutions du plateau de jeu.
+     *
+     * @return Le nombre de solutions.
+     */
     private int getNbSolutions() {
         int nbSolutions = 0;
 
@@ -282,6 +324,11 @@ public class Jeu implements Iterable<Coup>{
         return nbSolutions;
     }
 
+    /**
+     * Retourne le nombre de solutions trouvées du plateau de jeu.
+     *
+     * @return Le nombre de solutions trouvées.
+     */
     private int getNbSolutionsTrouves() {
         int nbSolutions = 0;
 
@@ -292,6 +339,11 @@ public class Jeu implements Iterable<Coup>{
         return nbSolutions;
     }
 
+    /**
+     * Retourne un itérateur sur les coups du plateau de jeu.
+     *
+     * @return L'itérateur sur les coups.
+     */
     @Override
     public Iterator<Coup> iterator() {
         return this.coups.iterator();

@@ -82,6 +82,11 @@ public class Coup {
         return this.estSolution;
     }
 
+    /**
+     * Définit si le coup fait partie des solutions.
+     *
+     * @param estSolution True si le coup fait partie des solutions, false sinon.
+     */
     public void setEstSolution(boolean estSolution) {
         this.estSolution = estSolution;
     }
@@ -89,6 +94,6 @@ public class Coup {
 
     @Override
     public String toString() {
-        return String.format("(L%d, C%d) / (%d %d)", this.getLigne(), this.getColonne(), this.getSommeLigne(), this.getSommeColonne());
+        return String.format("<L%d, C%d> / <%d %d>", this.getLigne(), this.getColonne(), this.getSommeLigne(), this.getSommeColonne());
     }
 }

@@ -10,6 +10,12 @@ public class Infos extends HBox implements Observateur {
     private Jeu         jeu;
     private ImageView[] coeurs;
 
+
+    /**
+     * Constructeur de la classe Infos.
+     *
+     * @param jeu Le jeu pour lequel cette instance d'Infos agit comme observateur.
+     */
     public Infos(Jeu jeu) {
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
@@ -19,10 +25,18 @@ public class Infos extends HBox implements Observateur {
         // this.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Méthode appelée pour réagir aux changements dans le jeu.
+     * Réinitialise les coeurs affichés.
+     */
     public void reagir() {
         this.initCoeurs();
     }
 
+    /**
+     * Initialise les coeurs en fonction du nombre de vies restantes dans le jeu.
+     * Efface les coeurs existants et ajoute de nouveaux coeurs si le nombre de vies est supérieur à zéro.
+     */
     private void initCoeurs() {
         this.getChildren().clear();
 
