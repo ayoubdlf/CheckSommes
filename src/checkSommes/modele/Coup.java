@@ -1,0 +1,94 @@
+package checkSommes.modele;
+
+
+public class Coup {
+
+    private int     ligne;
+    private int     colonne;
+    private int     sommeLigne;
+    private int     sommeColonne;
+    private boolean aide;
+    private boolean estSolution;
+
+    /**
+     * Constructeur de la classe Coup.
+     *
+     * @param ligne Le numero de la ligne.
+     * @param colonne Le numero de la colonne.
+     * @param sommeLigne La somme de la ligne.
+     * @param sommeColonne La somme de la colonne.
+     * @param aide
+     */
+    public Coup(int ligne, int colonne, int sommeLigne, int sommeColonne, boolean aide) {
+        this.ligne        = ligne;
+        this.colonne      = colonne;
+        this.sommeLigne   = sommeLigne;
+        this.sommeColonne = sommeColonne;
+        this.aide         = aide;
+        this.estSolution  = false;
+    }
+
+    /**
+     * Retourne la valeur de la ligne.
+     *
+     * @return La valeur de la ligne.
+     */
+    public int getLigne() {
+        return this.ligne;
+    }
+
+    /**
+     * Retourne la valeur de la colonne.
+     *
+     * @return La valeur de la colonne.
+     */
+    public int getColonne() {
+        return this.colonne;
+    }
+
+    /**
+     * Retourne la valeur de la somme de la ligne.
+     *
+     * @return La valeur de la somme de la ligne.
+     */
+    public int getSommeLigne() {
+        return this.sommeLigne;
+    }
+
+    /**
+     * Retourne la valeur de la somme de la colonne.
+     *
+     * @return La valeur de la somme de la colonne.
+     */
+    public int getSommeColonne() {
+        return this.sommeColonne;
+    }
+
+    /**
+     * Retourne la valeur de l'aide.
+     *
+     * @return La valeur de l'aide.
+     */
+    public boolean getAide() {
+        return this.aide;
+    }
+
+    /**
+     * Retourne si le coup fait partie des solutions.
+     *
+     * @return True si le coup fait partie des solutions, false sinon.
+     */
+    public boolean estSolution() {
+        return this.estSolution;
+    }
+
+    public void setEstSolution(boolean estSolution) {
+        this.estSolution = estSolution;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("(L%d, C%d) / (%d %d)", this.getLigne(), this.getColonne(), this.getSommeLigne(), this.getSommeColonne());
+    }
+}

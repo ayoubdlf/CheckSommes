@@ -19,12 +19,17 @@ public class Main extends Application {
         VBox rightPanel = new VBox();
         rightPanel.getChildren().add(new Infos(jeu));
 
+        root.setCenter(new PlateauGraphique(jeu));
         root.setBottom(new PanneauDeControle(jeu));
         root.setRight(rightPanel);
 
+        rightPanel.setMinWidth(150);
+        rightPanel.setPrefWidth(150);
+        rightPanel.setMaxWidth(150);
+
 
         stage.setTitle("Casse-tête de nombres");
-        stage.setScene(new Scene(root, 500, 450));
+        stage.setScene(new Scene(root, 700, 500));
         stage.show();
     }
 

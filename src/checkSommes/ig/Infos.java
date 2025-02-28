@@ -17,11 +17,7 @@ public class Infos extends HBox implements Observateur {
 
         this.initCoeurs();
 
-        for(ImageView coeur : this.coeurs) {
-            this.getChildren().add(coeur);
-        }
-
-        this.setAlignment(Pos.CENTER);
+        // this.setAlignment(Pos.CENTER);
     }
 
     public void reagir() {
@@ -29,12 +25,19 @@ public class Infos extends HBox implements Observateur {
     }
 
     private void initCoeurs() {
+        this.getChildren().clear();
+
         this.coeurs = new ImageView[this.jeu.getNbVies()];
+
         for (int i = 0; i < this.coeurs.length; i++) {
             this.coeurs[i] = new ImageView();
             this.coeurs[i].setImage(new Image(getClass().getResource("/coeur.png").toExternalForm()));
             this.coeurs[i].setFitWidth(30);
             this.coeurs[i].setPreserveRatio(true);
+        }
+
+        for(ImageView coeur : this.coeurs) {
+            this.getChildren().add(coeur);
         }
     }
 
