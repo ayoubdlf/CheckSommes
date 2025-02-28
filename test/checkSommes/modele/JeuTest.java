@@ -37,4 +37,10 @@ class JeuTest {
         assertFalse(jeu.enModeNon());
     }
 
+    @Test
+    void testGetNbVies() {
+        Jeu jeu = new Jeu();
+        assertEquals(5, jeu.getNbVies());
+    }
+
 }

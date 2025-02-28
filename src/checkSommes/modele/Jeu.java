@@ -1,5 +1,6 @@
 package checkSommes.modele;
 
+import checkSommes.ig.Observateur;
 import java.util.ArrayList;
 
 
@@ -7,15 +8,37 @@ public class Jeu {
 
     private ArrayList<Observateur> observateurs; // Liste des observateurs qui seront notifiés des changements
     private boolean mode;                        // Indique le mode actuel du jeu : true = oui, false = non
+    private int nbVies;                          // Indique le nombre de vies restantes
 
 
     /**
      * Constructeur de la classe Jeu.
-     * Initialise la liste des observateurs et le mode à 'non'.
      */
     public Jeu() {
         this.observateurs = new ArrayList<>();
         this.mode         = false;
+        this.nbVies       = 5;
+    }
+
+    /**
+     * Ajoute un observateur à la liste des observateurs.
+     *
+     * @param observateur L'observateur à ajouter. Ne doit pas être nul.
+     * @throws AssertionError si l'observateur est nul.
+     */
+    public void ajouterObservateur(Observateur observateur) {
+        assert (observateur != null) : "L'observateur ne doit pas etre nul";
+
+        this.observateurs.add(observateur);
+    }
+
+    /**
+     * Notifie tous les observateurs en appelant leur méthode 'reagir'.
+     */
+    public void notifierObservateurs() {
+        for(Observateur observateur : this.observateurs) {
+            observateur.reagir();
+        }
     }
 
     /**
@@ -46,24 +69,12 @@ public class Jeu {
     }
 
     /**
-     * Ajoute un observateur à la liste des observateurs.
+     * Retourne le nombre de vies restantes dans le jeu.
      * 
-     * @param observateur L'observateur à ajouter. Ne doit pas être nul.
-     * @throws AssertionError si l'observateur est nul.
+     * @return Le nombre de vies restantes.
      */
-    public void ajouterObservateur(Observateur observateur) {
-        assert (observateur != null) : "L'observateur ne doit pas etre nul";
-
-        this.observateurs.add(observateur);
-    }
-
-    /**
-     * Notifie tous les observateurs en appelant leur méthode 'reagir'.
-     */
-    public void notifierObservateurs() {
-        for(Observateur observateur : this.observateurs) {
-            observateur.reagir();
-        }
+    public int getNbVies() {
+        return this.nbVies;
     }
 
 }
