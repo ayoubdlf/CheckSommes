@@ -23,6 +23,10 @@ public class Jeu implements Iterable<Coup>{
      */
     public Jeu() {
         this.observateurs = new ArrayList<>(3);
+        this.initJeu();
+    }
+
+    private void initJeu() {
         this.coups        = new ArrayList<>();
         this.mode         = false;
         this.nbVies       = 5;
@@ -240,6 +244,9 @@ public class Jeu implements Iterable<Coup>{
         this.choisirCase(caseAleatoireNonChoisie[0], caseAleatoireNonChoisie[1], true);
     }
 
+    public void reinitialiserPlateau() {
+        this.initJeu();
+    }
 
     private Integer[] getCaseAleatoireNonChoisie() {
         ArrayList<Integer[]> casesAleatoire = this.getCasesNonChoisies();

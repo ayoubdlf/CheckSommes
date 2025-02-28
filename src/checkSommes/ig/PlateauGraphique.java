@@ -21,7 +21,21 @@ public class PlateauGraphique extends GridPane implements Observateur {
     }
 
     public void reagir() {
+        if(this.jeu.jeuTermine()) {
+            this.showDialogue();
+            this.jeu.reinitialiserPlateau();
+        }
         this.initPlateau();
+    }
+
+    private void showDialogue() {
+        Dialog<String> dialog = new Dialog<>();
+
+        dialog.setTitle("Jeu termine");
+        dialog.setContentText("Vous avez terminé le jeu");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
+        dialog.showAndWait();
     }
 
     private void initLabelSommes() {

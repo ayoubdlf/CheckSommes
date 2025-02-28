@@ -121,12 +121,12 @@ class JeuTest {
     void testSommeLigne() {
         Jeu jeu = new Jeu(); // il aura le monde `FabriquePlateau.FabriquePlateau5x5()`
 
-        int[][] cases = {
-            { 1, 2, 1, 2, 2 }, // 6
-            { 3, 3, 2, 1, 6 }, // 5
-            { 2, 7, 2, 7, 2 }, // 9
-            { 3, 1, 5, 1, 6 }  // 7
-        };
+        // int[][] cases = {
+        //     { 1, 2, 1, 2, 2 }, // 6
+        //     { 3, 3, 2, 1, 6 }, // 5
+        //     { 2, 7, 2, 7, 2 }, // 9
+        //     { 3, 1, 5, 1, 6 }  // 7
+        // };
 
         assertEquals(6, jeu.sommeLigne(0));
         assertEquals(5, jeu.sommeLigne(1));
@@ -138,13 +138,13 @@ class JeuTest {
     void testSommeColonne() {
         Jeu jeu = new Jeu(); // il aura le monde `FabriquePlateau.FabriquePlateau5x5()`
 
-        int[][] cases = {
-                { 1, 2, 1, 2, 2 },
-                { 3, 3, 2, 1, 6 },
-                { 2, 7, 2, 7, 2 },
-                { 3, 1, 5, 1, 6 }
-                //    2  6  2  9  8
-        };
+        // int[][] cases = {
+        //         { 1, 2, 1, 2, 2 },
+        //         { 3, 3, 2, 1, 6 },
+        //         { 2, 7, 2, 7, 2 },
+        //         { 3, 1, 5, 1, 6 }
+        //         //    2  6  2  9  8
+        // };
 
         assertEquals(2, jeu.sommeColonne(0));
         assertEquals(6, jeu.sommeColonne(1));

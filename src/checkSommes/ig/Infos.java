@@ -1,7 +1,6 @@
 package checkSommes.ig;
 
 import checkSommes.modele.Jeu;
-import javafx.geometry.Pos;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
 
