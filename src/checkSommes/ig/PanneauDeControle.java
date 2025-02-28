@@ -20,7 +20,7 @@ public class PanneauDeControle extends HBox implements Observateur {
         this.buttonAide = new Button("Aide");
 
         this.buttonMode.setOnAction(e -> this.jeu.switchMode());
-        // this.buttonAide.setOnAction(e -> {System.out.println("Help");});
+        this.buttonAide.setOnAction(e -> this.jeu.aider());
 
         this.getChildren().addAll(this.buttonMode, this.buttonAide);
         this.setAlignment(Pos.CENTER);

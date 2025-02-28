@@ -5,6 +5,7 @@ import checkSommes.ig.Observateur;
 import checkSommes.utils.Couleur;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 
@@ -197,6 +198,10 @@ public class Jeu implements Iterable<Coup>{
     }
 
     public void choisirCase(int ligne, int colonne) {
+        this.choisirCase(ligne, colonne, false);
+    }
+
+    public void choisirCase(int ligne, int colonne, boolean aide) {
         assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
         assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
 
@@ -208,11 +213,15 @@ public class Jeu implements Iterable<Coup>{
         int couleur = c.estSolution() ? Couleur.CORAIL.getNumero() : Couleur.GRIS.getNumero();
         c.setCouleur(couleur);
 
-        if ((this.enModeOui() && !c.estSolution()) || (this.enModeNon() && c.estSolution())) {
-            this.enleverVie(1); // TODO: enlever 2 vies lorsque c'est en mode `aide`
+        if(aide) {
+            this.enleverVie(2);
         }
 
-        Coup coup = new Coup(ligne, colonne, this.sommeLigne(ligne), this.sommeColonne(colonne), false); // TODO: change le false avec l'aide si besoin
+        if (!aide && ((this.enModeOui() && !c.estSolution()) || (this.enModeNon() && c.estSolution()))) {
+            this.enleverVie(1);
+        }
+
+        Coup coup = new Coup(ligne, colonne, this.sommeLigne(ligne), this.sommeColonne(colonne), aide);
         coup.setEstSolution(c.estSolution());
 
 
@@ -222,7 +231,36 @@ public class Jeu implements Iterable<Coup>{
     }
 
     public boolean jeuTermine() {
-        return (this.nbVies == 0) || (this.getNbSolutions() == this.getNbSolutionsTrouves());
+        return (this.nbVies <= 0) || (this.getNbSolutions() == this.getNbSolutionsTrouves());
+    }
+
+    public void aider() {
+        Integer[] caseAleatoireNonChoisie = this.getCaseAleatoireNonChoisie();
+
+        this.choisirCase(caseAleatoireNonChoisie[0], caseAleatoireNonChoisie[1], true);
+    }
+
+
+    private Integer[] getCaseAleatoireNonChoisie() {
+        ArrayList<Integer[]> casesAleatoire = this.getCasesNonChoisies();
+        Collections.shuffle(casesAleatoire);
+
+        return casesAleatoire.getFirst();
+    }
+
+    private ArrayList<Integer[]> getCasesNonChoisies() {
+        ArrayList<Integer[]> casesNonChoisies = new ArrayList<>();
+
+        for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
+            for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
+                if(!this.cases[ligne][colonne].estChoisie()) {
+                    // casesNonChoisies.add(this.cases[ligne][colonne]);
+                    casesNonChoisies.add(new Integer[]{ ligne, colonne });
+                }
+            }
+        }
+
+        return casesNonChoisies;
     }
 
     private int getNbSolutions() {

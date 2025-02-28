@@ -27,6 +27,8 @@ public class Infos extends HBox implements Observateur {
     private void initCoeurs() {
         this.getChildren().clear();
 
+        if(this.jeu.getNbVies() <= 0) { return; }
+
         this.coeurs = new ImageView[this.jeu.getNbVies()];
 
         for (int i = 0; i < this.coeurs.length; i++) {
