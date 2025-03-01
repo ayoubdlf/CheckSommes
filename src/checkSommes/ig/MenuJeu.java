@@ -16,6 +16,8 @@ public class MenuJeu extends MenuBar implements Observateur {
         this.jeu.ajouterObservateur(this);
 
         this.initMenuJeu();
+
+        Tooltip.install(this, new Tooltip("Menu principal"));
     }
 
     private void initMenuJeu() {

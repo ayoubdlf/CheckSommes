@@ -3,6 +3,8 @@ package checkSommes.ig;
 import checkSommes.modele.Coup;
 import checkSommes.modele.Jeu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -17,6 +19,9 @@ public class Historique extends VBox implements Observateur {
         this.jeu.ajouterObservateur(this);
 
         this.afficherCoups();
+
+        VBox.setVgrow(this, Priority.ALWAYS);
+        Tooltip.install(this, new Tooltip("Historique des coups"));
     }
 
     /**

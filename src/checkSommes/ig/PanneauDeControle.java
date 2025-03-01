@@ -3,6 +3,7 @@ package checkSommes.ig;
 import checkSommes.modele.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 
@@ -33,6 +34,10 @@ public class PanneauDeControle extends HBox implements Observateur {
 
         this.getChildren().addAll(this.buttonMode, buttonAide);
         this.setAlignment(Pos.CENTER);
+
+        Tooltip.install(this, new Tooltip("Panneau de contrôle"));
+        Tooltip.install(buttonAide, new Tooltip("Reveler une case"));
+        Tooltip.install(this.buttonMode, new Tooltip("Mode de jeu"));
     }
 
     /**

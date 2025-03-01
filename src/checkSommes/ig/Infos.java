@@ -1,6 +1,7 @@
 package checkSommes.ig;
 
 import checkSommes.modele.Jeu;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
 
@@ -23,6 +24,8 @@ public class Infos extends HBox implements Observateur {
         this.setMinHeight(40);
         this.setPrefHeight(40);
         this.setMaxHeight(40);
+
+        Tooltip.install(this, new Tooltip("Nombre de coeurs restants"));
     }
 
     /**
@@ -41,7 +44,7 @@ public class Infos extends HBox implements Observateur {
         this.getChildren().clear();
 
         if(this.jeu.getNbVies() == 0) { return; }
-        
+
         for (int i = 0; i < this.jeu.getNbVies(); i++) {
             ImageView coeur = new ImageView();
             coeur.setImage(new Image(getClass().getResource("/coeur.png").toExternalForm()));

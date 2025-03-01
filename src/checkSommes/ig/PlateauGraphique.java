@@ -37,6 +37,8 @@ public class PlateauGraphique extends GridPane implements Observateur {
         }
 
         this.initPlateau();
+
+        Tooltip.install(this, new Tooltip("Plateau de jeu"));
     }
 
     /**
