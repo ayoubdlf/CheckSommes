@@ -17,6 +17,8 @@ public class Infos extends HBox implements Observateur {
      * @param jeu Le jeu pour lequel cette instance d'Infos agit comme observateur.
      */
     public Infos(Jeu jeu) {
+        assert(jeu != null) : "Le jeu ne doit pas etre nul";
+
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 

@@ -12,6 +12,8 @@ public class MenuJeu extends MenuBar implements Observateur {
     private Jeu jeu;
 
     public MenuJeu(Jeu jeu) {
+        assert(jeu != null) : "Le jeu ne doit pas etre nul";
+
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 

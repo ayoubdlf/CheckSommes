@@ -19,6 +19,8 @@ public class PanneauControle extends HBox implements Observateur {
      * @param jeu L'instance du jeu à laquelle ce panneau est associé.
      */
     public PanneauControle(Jeu jeu) {
+        assert(jeu != null) : "Le jeu ne doit pas etre nul";
+
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 

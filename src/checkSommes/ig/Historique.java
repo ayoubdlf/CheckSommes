@@ -15,6 +15,8 @@ public class Historique extends VBox implements Observateur {
 
 
     public Historique(Jeu jeu) {
+        assert(jeu != null) : "Le jeu ne doit pas etre nul";
+
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 

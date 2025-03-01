@@ -17,6 +17,8 @@ public class PlateauGraphique extends GridPane implements Observateur {
      * @param jeu Le modèle de jeu associé à ce plateau graphique.
      */
     public PlateauGraphique(Jeu jeu) {
+        assert(jeu != null) : "Le jeu ne doit pas etre nul";
+
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 
