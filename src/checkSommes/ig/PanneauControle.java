@@ -7,7 +7,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 
-public class PanneauDeControle extends HBox implements Observateur {
+public class PanneauControle extends HBox implements Observateur {
 
     private Jeu    jeu;
     private Button buttonMode;
@@ -18,7 +18,7 @@ public class PanneauDeControle extends HBox implements Observateur {
      *
      * @param jeu L'instance du jeu à laquelle ce panneau est associé.
      */
-    public PanneauDeControle(Jeu jeu) {
+    public PanneauControle(Jeu jeu) {
         this.jeu = jeu;
         this.jeu.ajouterObservateur(this);
 

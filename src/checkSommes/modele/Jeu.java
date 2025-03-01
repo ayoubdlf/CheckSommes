@@ -37,11 +37,18 @@ public class Jeu implements Iterable<Coup>{
 
         for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
             for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
-                this.cases[ligne][colonne].initialiser();
+                this.initialiserCase(ligne, colonne);
             }
         }
 
         this.notifierObservateurs();
+    }
+
+    private void initialiserCase(int ligne, int colonne) {
+        assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
+        assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
+
+        this.cases[ligne][colonne].initialiser();
     }
 
     /**
@@ -161,9 +168,7 @@ public class Jeu implements Iterable<Coup>{
         int somme = 0;
 
         for (int colonne = 0; colonne < this.getNbColonnes() ; colonne++) {
-            Case c = this.cases[ligne][colonne];
-
-            somme += c.estSolution() ? c.getValeur() : 0;
+            somme += this.estSolution(ligne, colonne) ? this.getValeur(ligne, colonne) : 0;
         }
 
         return somme;
@@ -182,9 +187,7 @@ public class Jeu implements Iterable<Coup>{
         int somme = 0;
 
         for (int ligne = 0; ligne < this.getNbLignes() ; ligne++) {
-            Case c = this.cases[ligne][colonne];
-
-            somme += c.estSolution() ? c.getValeur() : 0;
+            somme += this.estSolution(ligne, colonne) ? this.getValeur(ligne, colonne) : 0;
         }
 
         return somme;
@@ -202,6 +205,20 @@ public class Jeu implements Iterable<Coup>{
         assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
 
         return this.cases[ligne][colonne].estSolution();
+    }
+
+    /**
+     * Vérifie si la case à la position spécifiée est choisie.
+     *
+     * @param ligne   La ligne de la case.
+     * @param colonne La colonne de la case.
+     * @return true si la case est choisie, false sinon.
+     */
+    public boolean estChoisie(int ligne, int colonne) {
+        assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
+        assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
+
+        return this.cases[ligne][colonne].estChoisie();
     }
 
     /**
@@ -241,20 +258,19 @@ public class Jeu implements Iterable<Coup>{
         assert (ligne   >= 0 && ligne   < this.getNbLignes())   : "La nombre de la ligne est incorrect";
         assert (colonne >= 0 && colonne < this.getNbColonnes()) : "La nombre de la colonne est incorrect";
 
-        Case caseChoisie = this.cases[ligne][colonne];
-        if(caseChoisie.estChoisie()) { return; } // Ne rien faire si la case est déjà choisie
+        if(this.estChoisie(ligne, colonne)) { return; } // Ne rien faire si la case est déjà choisie
 
-        caseChoisie.choisir();
+        this.cases[ligne][colonne].choisir();
 
         if(avecAide) {
             this.enleverVie(2);
-        } else if ((this.enModeOui() && !caseChoisie.estSolution()) || (this.enModeNon() && caseChoisie.estSolution())) {
+        } else if ((this.enModeOui() && !this.estSolution(ligne, colonne)) || (this.enModeNon() && this.estSolution(ligne, colonne))) {
             this.enleverVie(1);
         }
 
         Coup coup = new Coup(ligne, colonne, this.sommeLigne(ligne), this.sommeColonne(colonne));
         coup.setEstAvecAide(avecAide);
-        coup.setEstSolution(caseChoisie.estSolution());
+        coup.setEstSolution(this.estSolution(ligne, colonne));
 
         this.coups.add(coup); // Ajouter le coup
 
@@ -353,7 +369,7 @@ public class Jeu implements Iterable<Coup>{
 
         for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
             for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
-                if(!this.cases[ligne][colonne].estChoisie()) {
+                if(!this.estSolution(ligne, colonne)) {
                     casesNonChoisies.add(new Integer[]{ ligne, colonne });
                 }
             }
@@ -372,7 +388,7 @@ public class Jeu implements Iterable<Coup>{
 
         for (int ligne = 0; ligne < this.getNbLignes(); ligne++) {
             for (int colonne = 0; colonne < this.getNbColonnes(); colonne++) {
-                nbSolutions += this.cases[ligne][colonne].estSolution() ? 1 : 0;
+                nbSolutions += this.estSolution(ligne, colonne) ? 1 : 0;
             }
         }
 

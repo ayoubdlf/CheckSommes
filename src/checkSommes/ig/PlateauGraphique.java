@@ -1,12 +1,10 @@
 package checkSommes.ig;
 
-import checkSommes.modele.Coup;
 import checkSommes.modele.Jeu;
 import checkSommes.utils.Couleur;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Modality;
 
 
 public class PlateauGraphique extends GridPane implements Observateur {

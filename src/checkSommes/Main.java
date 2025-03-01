@@ -21,7 +21,7 @@ public class Main extends Application {
 
         root.setTop(new MenuJeu(jeu));
         root.setCenter(new PlateauGraphique(jeu));
-        root.setBottom(new PanneauDeControle(jeu));
+        root.setBottom(new PanneauControle(jeu));
         root.setRight(rightPanel);
 
         rightPanel.setMinWidth(150);

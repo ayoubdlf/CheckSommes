@@ -4,6 +4,7 @@ import checkSommes.modele.Jeu;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
+import java.util.Objects;
 
 
 public class Infos extends HBox implements Observateur {
@@ -47,7 +48,7 @@ public class Infos extends HBox implements Observateur {
 
         for (int i = 0; i < this.jeu.getNbVies(); i++) {
             ImageView coeur = new ImageView();
-            coeur.setImage(new Image(getClass().getResource("/coeur.png").toExternalForm()));
+            coeur.setImage(new Image(Objects.requireNonNull(getClass().getResource("/coeur.png")).toExternalForm()));
             coeur.setFitWidth(30);
             coeur.setPreserveRatio(true);
 
