@@ -44,8 +44,8 @@ public class MenuJeu extends MenuBar implements Observateur {
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur");
-                alert.setHeaderText("Erreur lors de l'ouverture du fichier");
-                alert.setContentText(ex.getMessage());
+                alert.setHeaderText(null);
+                alert.setContentText("Erreur lors de l'ouverture du fichier");
                 alert.showAndWait();
             }
         });
